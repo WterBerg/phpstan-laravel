@@ -1,0 +1,36 @@
+name: "Testsuite"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  testsuite:
+    strategy:
+      matrix:
+        php-versions: ["7.4", "8.0"]
+
+    runs-on: "ubuntu-latest"
+
+    steps:
+    - name: "Checkout code"
+      uses: "actions/checkout@v2"
+
+    - name: "Install PHP"
+      uses: "shivammathur/setup-php@v2"
+      with:
+        php-version: ${{ matrix.php-versions }}
+
+    - name: "Install dependencies"
+      run: "composer install --prefer-dist --no-interaction --no-progress"
+
+    - name: "PHPStan"
+      run: "vendor/bin/phpstan analyse"
+
+    - name: "PHPUnit"
+      run: "vendor/bin/phpunit"
+
+    - name: "PHP-CS-Fixer"
+      uses: "OskarStark/php-cs-fixer-ga@3.4.0.1"
