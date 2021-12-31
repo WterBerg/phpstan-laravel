@@ -1,0 +1,3 @@
+rules:
+  - WterBerg\PHPStanLaravel\Rules\LaravelEnvFunctionCallsRule
+  - WterBerg\PHPStanLaravel\Rules\LaravelFacadeRule

@@ -1,0 +1,19 @@
+# IDE
+/.idea
+/.vscode
+
+# Composer
+/vendor
+/composer.phar
+/composer.lock
+/auth.json
+
+# Local files
+/phpunit.xml
+/phpstan.neon
+/.php-cs-fixer.php
+
+# Tests
+/php-cs-fixer.phar
+/.php-cs-fixer.cache
+/.phpunit.result.cache
