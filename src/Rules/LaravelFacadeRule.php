@@ -61,7 +61,7 @@ class LaravelFacadeRule implements Rule
     private array $facades = [
         \Illuminate\Support\Facades\App::class    => [
             'alternative' => 'app()',
-            'methods'     => ['make'],
+            'methods'     => ['make', 'makeWith'],
         ],
         \Illuminate\Support\Facades\Auth::class   => [
             'alternative' => 'auth()',
