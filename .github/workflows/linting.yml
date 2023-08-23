@@ -28,3 +28,19 @@ jobs:
             -type f \
             \( -name "*.yml" -o -name "*.yaml" \) \
             -exec python -m yamllint --strict --config-file ./.yamllint.yml {} +;
+
+  XML:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: sudo apt-get update
+
+      - run: sudo apt-get install libxml2-utils --yes
+
+      - uses: actions/checkout@v2
+
+      - run: |
+          find ./ \
+            -type f \
+            \( -name "*.xml" -o -name "*.xml.dist" \) -not -path "./.git/*" \
+            -exec xmllint --noout {} +;
