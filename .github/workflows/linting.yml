@@ -13,7 +13,6 @@ on:
 jobs:
   YAML:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/setup-python@v4
         with:
@@ -31,7 +30,6 @@ jobs:
 
   XML:
     runs-on: ubuntu-latest
-
     steps:
       - run: sudo apt-get update
 
@@ -44,3 +42,11 @@ jobs:
             -type f \
             \( -name "*.xml" -o -name "*.xml.dist" \) -not -path "./.git/*" \
             -exec xmllint --noout {} +;
+
+  Composer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: php-actions/composer@v6
+        with:
+          command: validate --check-lock --strict
