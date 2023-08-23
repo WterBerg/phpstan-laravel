@@ -1,4 +1,4 @@
-# WterBerg / PHPStan-Laravel
+# WterBerg / PHPStan Laravel
 
 [github.com/wterberg/dcat-catalog](https://github.com/wterberg/dcat-catalog.git)
 
