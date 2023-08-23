@@ -1,0 +1,24 @@
+---
+
+name: "Linting"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  yaml:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - run: "pip install --no-warn-script-location --user yamllint"
+
+      - uses: actions/checkout@v2
+
+      - run: "find ./ -type f \( -name \"*.yml\" -o -name \"*.yaml\" \) -exec python -m yamllint --strict --config-file ./.yamllint.yml {} +;"
