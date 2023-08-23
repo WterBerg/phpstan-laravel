@@ -32,7 +32,7 @@ jobs:
           ./resources/tools/php-cs-fixer fix \
             --config=./.php-cs-fixer.dist.php \
             --verbose \
-            --format=junit
+            --format=junit \
             --using-cache=no \
             --dry-run > php-cs-fixer.junit.xml
 
@@ -90,4 +90,9 @@ jobs:
 
       - uses: ngmy/phive-install-action@master
 
-      - run: ./resources/tools/phpcpd
+      - run: |
+          ./resources/tools/phpcpd \
+            --min-lines=20 \
+            --fuzzy \
+            --suffix .php \
+            ./src
