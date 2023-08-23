@@ -9,7 +9,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  yaml:
+  YAML:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,4 +21,4 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - run: "find ./ -type f \( -name \"*.yml\" -o -name \"*.yaml\" \) -exec python -m yamllint --strict --config-file ./.yamllint.yml {} +;"
+      - run: "find ./ -type f \\( -name \"*.yml\" -o -name \"*.yaml\" \\) -exec python -m yamllint --strict --config-file ./.yamllint.yml {} +;"

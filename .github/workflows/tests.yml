@@ -1,6 +1,6 @@
 ---
 
-name: "PHPUnit"
+name: "Tests"
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  run-tests:
+  PHPUnit:
     runs-on: ubuntu-latest
 
     steps:
