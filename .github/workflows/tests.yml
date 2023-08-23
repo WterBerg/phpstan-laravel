@@ -30,4 +30,5 @@ jobs:
 
       - uses: 5monkeys/cobertura-action@master
         with:
-          path: ./phpunit.cobertura.mxl
+          path: ./phpunit.cobertura.xml
+          minimum_coverage: 50
