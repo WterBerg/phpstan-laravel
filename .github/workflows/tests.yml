@@ -9,48 +9,22 @@ on:
     branches: [ "main" ]
 
 jobs:
-  composer-dependencies:
+  run-tests:
     runs-on: ubuntu-latest
+    container: php:8.2-alpine
 
     steps:
       - uses: actions/checkout@v2
+
       - uses: ramsey/composer-install@v2
         with:
           dependency-versions: locked
           composer-options: "--no-scripts"
-      - uses: actions/upload-artifact@v3
-        with:
-          name: composer-install
-          path: vendor/
-          if-no-files-found: error
 
-  phive-dependencies:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
       - uses: ngmy/phive-install-action@master
-      - uses: actions/upload-artifact@v3
-        with:
-          name: phive-install
-          path: resources/tools/
-          if-no-files-found: error
 
-  run-tests:
-    runs-on: ubuntu-latest
-    container: php:8.1-alpine
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@master
-        with:
-          name: composer-install
-          path: vendor/
-      - uses: actions/download-artifact@master
-        with:
-          name: phive-install
-          path: resources/tools/
       - run: "./resources/tools/phpunit --do-not-cache-result --coverage-cobertura ./phpunit.cobertura.xml --colors=never"
+
       - uses: 5monkeys/cobertura-action@master
         with:
           path: ./phpunit.cobertura.mxl
