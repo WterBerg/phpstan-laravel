@@ -1,8 +1,5 @@
 # WterBerg / PHPStan-Laravel
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub issues](https://img.shields.io/github/issues/WterBerg/phpstan-laravel)](https://github.com/WterBerg/phpstan-laravel/issues)
-
 [github.com/wterberg/dcat-catalog](https://github.com/wterberg/dcat-catalog.git)
 
 Contains several custom rules to analyse Laravel projects with PHPStan.
