@@ -1,3 +1,9 @@
+# XpertSelect / Tools                    #
+# -------------------------------------- #
+# PHPStan configuration file for generic #
+# non-framework PHP projects.            #
+# -------------------------------------- #
+
 parameters:
   level: 8
   paths:

@@ -4,16 +4,16 @@
 
 # Composer
 /vendor
-/composer.phar
-/composer.lock
 /auth.json
 
-# Local files
+# Cache
+/.composer-cache
+/.phive-cache
+/*.cache
+
+# Testing
+/*.phar
+/junit.*.xml
 /phpunit.xml
 /phpstan.neon
 /.php-cs-fixer.php
-
-# Tests
-/php-cs-fixer.phar
-/.php-cs-fixer.cache
-/.phpunit.result.cache
