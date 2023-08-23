@@ -30,10 +30,11 @@ jobs:
       - run: |
           ./resources/tools/phpunit \
             --do-not-cache-result \
-            --coverage-cobertura ./phpunit.cobertura.xml \
+            --coverage-junit ./phpunit.junit.xml \
             --colors=never
 
-      - uses: 5monkeys/cobertura-action@master
+      - uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
         with:
-          path: ./phpunit.cobertura.xml
-          minimum_coverage: 50
+          check_name: PHPUnit
+          files: phpunit.junit.xml

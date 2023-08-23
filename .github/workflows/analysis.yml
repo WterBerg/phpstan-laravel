@@ -1,0 +1,93 @@
+---
+
+name: "Analysis"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  PHP-CS-Fixer:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+
+      - uses: actions/checkout@v2
+
+      - uses: ramsey/composer-install@v2
+        with:
+          dependency-versions: locked
+          composer-options: "--no-scripts"
+
+      - uses: ngmy/phive-install-action@master
+
+      - run: |
+          ./resources/tools/php-cs-fixer fix \
+            --config=./.php-cs-fixer.dist.php \
+            --verbose \
+            --format=junit
+            --using-cache=no \
+            --dry-run > php-cs-fixer.junit.xml
+
+      - uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          check_name: PHP-CS-Fixer
+          files: php-cs-fixer.junit.xml
+
+  PHPStan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+
+      - uses: actions/checkout@v2
+
+      - uses: ramsey/composer-install@v2
+        with:
+          dependency-versions: locked
+          composer-options: "--no-scripts"
+
+      - uses: ngmy/phive-install-action@master
+
+      - run: |
+          ./resources/tools/phpstan analyse \
+            --no-progress \
+            --memory-limit=-1 \
+            --error-format=junit \
+            -c ./phpstan.neon.dist \
+            > ./phpstan.junit.xml
+
+      - uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          check_name: PHPStan
+          files: phpstan.junit.xml
+
+  PHPCPD:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+
+      - uses: actions/checkout@v2
+
+      - uses: ramsey/composer-install@v2
+        with:
+          dependency-versions: locked
+          composer-options: "--no-scripts"
+
+      - uses: ngmy/phive-install-action@master
+
+      - run: ./resources/tools/phpcpd
