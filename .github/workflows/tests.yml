@@ -1,17 +1,18 @@
 ---
 
-name: "PHPUnit"
+name: "Tests"
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  run-tests:
+  PHPUnit:
     runs-on: ubuntu-latest
-
     steps:
       - uses: shivammathur/setup-php@v2
         with:
@@ -26,7 +27,11 @@ jobs:
 
       - uses: ngmy/phive-install-action@master
 
-      - run: "./resources/tools/phpunit --do-not-cache-result --coverage-cobertura ./phpunit.cobertura.xml --colors=never"
+      - run: |
+          ./resources/tools/phpunit \
+            --do-not-cache-result \
+            --coverage-cobertura ./phpunit.cobertura.xml \
+            --colors=never
 
       - uses: 5monkeys/cobertura-action@master
         with:

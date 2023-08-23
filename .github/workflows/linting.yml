@@ -1,0 +1,52 @@
+---
+
+name: "Linting"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  YAML:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - run: pip install --no-warn-script-location --user yamllint
+
+      - uses: actions/checkout@v2
+
+      - run: |
+          find ./ \
+            -type f \
+            \( -name "*.yml" -o -name "*.yaml" \) \
+            -exec python -m yamllint --strict --config-file ./.yamllint.yml {} +;
+
+  XML:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sudo apt-get update
+
+      - run: sudo apt-get install libxml2-utils --yes
+
+      - uses: actions/checkout@v2
+
+      - run: |
+          find ./ \
+            -type f \
+            \( -name "*.xml" -o -name "*.xml.dist" \) -not -path "./.git/*" \
+            -exec xmllint --noout {} +;
+
+  Composer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: php-actions/composer@v6
+        with:
+          command: validate --check-lock --strict
