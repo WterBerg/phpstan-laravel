@@ -4,9 +4,11 @@ name: "Tests"
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   PHPUnit:
@@ -26,7 +28,11 @@ jobs:
 
       - uses: ngmy/phive-install-action@master
 
-      - run: "./resources/tools/phpunit --do-not-cache-result --coverage-cobertura ./phpunit.cobertura.xml --colors=never"
+      - run: |
+          ./resources/tools/phpunit \
+            --do-not-cache-result \
+            --coverage-cobertura ./phpunit.cobertura.xml \
+            --colors=never
 
       - uses: 5monkeys/cobertura-action@master
         with:
