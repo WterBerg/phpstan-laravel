@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the WterBerg/PHPStan-Laravel package.
+ * This file is part of the wterberg/phpstan-laravel package.
  *
  * This source file is subject to the license that is
  * bundled with this source code in the LICENSE.md file.
  */
 
-namespace WterBerg\PHPStanLaravel\Rules;
+namespace WterBerg\Laravel\PHPStan\Rules;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
@@ -22,10 +22,9 @@ use PHPStan\Rules\RuleErrorBuilder;
 /**
  * Class LaravelFacadeRule.
  *
- * Custom PHPStan rule for Laravel projects that scans for usages of the core Laravel facade for
- * which helper functions are available. As the Laravel helper functions lead to a smaller stack,
- * they are almost by definition more efficient and faster. The below example illustrates this by
- * comparing the Config facade versus its helper function equivalent.
+ * Custom PHPStan rule for Laravel projects that scans for usages of the core Laravel facade for which helper functions
+ * are available. As the Laravel helper functions lead to a smaller stack, they are almost by definition more efficient
+ * and faster. The below example illustrates this by comparing the Config facade versus its helper function equivalent.
  *
  * <strong>Callstack for `Config::get('app.name')`</strong>
  * <ol>
@@ -51,7 +50,7 @@ use PHPStan\Rules\RuleErrorBuilder;
  *
  * @implements Rule<StaticCall>
  */
-class LaravelFacadeRule implements Rule
+final class LaravelFacadeRule implements Rule
 {
     /**
      * The facade/method combinations that this rule should scan for.
@@ -59,15 +58,15 @@ class LaravelFacadeRule implements Rule
      * @var array<string, array<string, mixed>>
      */
     private array $facades = [
-        \Illuminate\Support\Facades\App::class    => [
+        \Illuminate\Support\Facades\App::class => [
             'alternative' => 'app()',
             'methods'     => ['make', 'makeWith'],
         ],
-        \Illuminate\Support\Facades\Auth::class   => [
+        \Illuminate\Support\Facades\Auth::class => [
             'alternative' => 'auth()',
             'methods'     => ['guard'],
         ],
-        \Illuminate\Support\Facades\Cache::class  => [
+        \Illuminate\Support\Facades\Cache::class => [
             'alternative' => 'cache()',
             'methods'     => ['get', 'put'],
         ],
@@ -104,13 +103,12 @@ class LaravelFacadeRule implements Rule
     /**
      * LaravelFacadeRule constructor.
      *
-     * @param array<string, array<string, mixed>> $facades When non-empty, will override the
-     *                                                     facade/method combinations that this rule
-     *                                                     should target
+     * @param array<string, array<string, mixed>> $facades When non-empty, will override the facade/method combinations
+     *                                                     that this rule should target
      */
     public function __construct(array $facades = [])
     {
-        if (!empty($facades)) {
+        if (count($facades) > 0) {
             $this->facades = $facades;
         }
     }

@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the WterBerg/PHPStan-Laravel package.
+ * This file is part of the wterberg/phpstan-laravel package.
  *
  * This source file is subject to the license that is
  * bundled with this source code in the LICENSE.md file.
  */
 
-namespace WterBerg\PHPStanLaravel\Rules;
+namespace WterBerg\Laravel\PHPStan\Rules;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\FuncCall;
@@ -27,7 +27,7 @@ use PHPStan\Rules\RuleErrorBuilder;
  *
  * @implements Rule<FuncCall>
  */
-class LaravelEnvFunctionCallsRule implements Rule
+final class LaravelEnvFunctionCallsRule implements Rule
 {
     /**
      * {@inheritdoc}

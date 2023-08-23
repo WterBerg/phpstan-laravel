@@ -3,17 +3,17 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the WterBerg/PHPStan-Laravel package.
+ * This file is part of the wterberg/phpstan-laravel package.
  *
  * This source file is subject to the license that is
  * bundled with this source code in the LICENSE.md file.
  */
 
-namespace Tests;
+namespace Tests\fixtures;
 
 use DateTime;
 
-class ClassWithoutFacadeUsage
+final class ClassWithoutFacadeUsage
 {
     public DateTime $property;
 
