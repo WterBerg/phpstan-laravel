@@ -34,7 +34,7 @@ final class LaravelEnvFunctionCallsRule implements Rule
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node\Expr\FuncCall::class;
+        return FuncCall::class;
     }
 
     /**

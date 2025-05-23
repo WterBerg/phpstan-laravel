@@ -8,10 +8,10 @@ indent_size = 4
 max_line_length = off
 end_of_line = lf
 
-[{*.yml, *.yaml, *.neon, *.neon.dist}]
+[{*.yml,*.yaml,*.neon,*.neon.dist}]
 indent_size = 2
 
-[{*.xml, *.xml.dist}]
+[{*.xml,*.xml.dist}]
 indent_size = 2
 
 [*.php]

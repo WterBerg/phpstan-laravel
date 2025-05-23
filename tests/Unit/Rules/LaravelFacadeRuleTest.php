@@ -13,6 +13,11 @@ namespace Tests\Unit\Rules;
 
 use Mockery as M;
 use Mockery\MockInterface as MI;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Name;
+use PHPStan\Analyser\Scope;
 use PHPUnit\Framework\TestCase;
 use WterBerg\Laravel\PHPStan\Rules\LaravelFacadeRule;
 
@@ -23,38 +28,38 @@ final class LaravelFacadeRuleTest extends TestCase
 {
     public function testRuleOnlyFiresOnStaticCalls(): void
     {
-        $this->assertEquals(
-            \PhpParser\Node\Expr\StaticCall::class,
+        self::assertEquals(
+            StaticCall::class,
             (new LaravelFacadeRule())->getNodeType()
         );
     }
 
     public function testProcessingHaltsWhenNonStaticCallInstanceIsPassed(): void
     {
-        $this->assertCount(0, (new LaravelFacadeRule())->processNode(
-            M::mock(\PhpParser\Node\Expr\MethodCall::class),
-            M::mock(\PHPStan\Analyser\Scope::class)
+        self::assertCount(0, (new LaravelFacadeRule())->processNode(
+            M::mock(MethodCall::class),
+            M::mock(Scope::class)
         ));
     }
 
     public function testProcessingHaltsWhenClassIsAnExpression(): void
     {
-        $this->assertCount(0, (new LaravelFacadeRule())->processNode(
-            M::mock(\PhpParser\Node\Expr\StaticCall::class, function(MI $mock) {
-                $mock->class = M::mock(\PhpParser\Node\Expr::class);
+        self::assertCount(0, (new LaravelFacadeRule())->processNode(
+            M::mock(StaticCall::class, function(MI $mock) {
+                $mock->class = M::mock(Expr::class);
             }),
-            M::mock(\PHPStan\Analyser\Scope::class)
+            M::mock(Scope::class)
         ));
     }
 
     public function testProcessingHaltsWhenNameIsAnExpression(): void
     {
-        $this->assertCount(0, (new LaravelFacadeRule())->processNode(
-            M::mock(\PhpParser\Node\Expr\StaticCall::class, function(MI $mock) {
-                $mock->class = M::mock(\PhpParser\Node\Name::class);
-                $mock->name  = M::mock(\PhpParser\Node\Expr::class);
+        self::assertCount(0, (new LaravelFacadeRule())->processNode(
+            M::mock(StaticCall::class, function(MI $mock) {
+                $mock->class = M::mock(Name::class);
+                $mock->name  = M::mock(Expr::class);
             }),
-            M::mock(\PHPStan\Analyser\Scope::class)
+            M::mock(Scope::class)
         ));
     }
 
@@ -65,17 +70,17 @@ final class LaravelFacadeRuleTest extends TestCase
             'methods'     => ['lorem'],
         ]]);
 
-        $this->assertCount(0, $facadeRule->processNode(
-            M::mock(\PhpParser\Node\Expr\StaticCall::class, function(MI $mock) {
-                $mock->class = M::mock(\PhpParser\Node\Name::class, function(MI $mock) {
+        self::assertCount(0, $facadeRule->processNode(
+            M::mock(StaticCall::class, function(MI $mock) {
+                $mock->class = M::mock(Name::class, function(MI $mock) {
                     $mock->shouldReceive('toString')->andReturn('Foo');
                 });
 
-                $mock->name = M::mock(\PhpParser\Node\Name::class, function(MI $mock) {
+                $mock->name = M::mock(Name::class, function(MI $mock) {
                     $mock->shouldReceive('toString')->andReturn('MockedName');
                 });
             }),
-            M::mock(\PHPStan\Analyser\Scope::class)
+            M::mock(Scope::class)
         ));
     }
 }

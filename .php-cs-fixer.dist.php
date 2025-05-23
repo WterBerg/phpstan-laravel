@@ -12,7 +12,7 @@ declare(strict_types=1);
 include 'vendor/autoload.php';
 
 $package = Composer\InstalledVersions::getRootPackage()['name'];
-$rules   = include \XpertSelect\Tools\ProjectType::Standard->phpCsFixerRuleFile();
+$rules   = include XpertSelect\Tools\ProjectType::Standard->phpCsFixerRuleFile();
 
 $rules['header_comment']['header'] = trim('
 This file is part of the ' . $package . ' package.
@@ -27,7 +27,7 @@ $finder = PhpCsFixer\Finder::create()
     ->ignoreDotFiles(false)
     ->ignoreVCSIgnored(true);
 
-return (new PhpCsFixer\Config('XpertSelect/Laravel'))
+return (new PhpCsFixer\Config('XpertSelect/PHP'))
     ->setIndent('    ')
     ->setLineEnding("\n")
     ->setRules($rules)

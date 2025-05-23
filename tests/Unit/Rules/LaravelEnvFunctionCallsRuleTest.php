@@ -13,6 +13,11 @@ namespace Tests\Unit\Rules;
 
 use Mockery as M;
 use Mockery\MockInterface as MI;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Name;
+use PHPStan\Analyser\Scope;
 use PHPUnit\Framework\TestCase;
 use WterBerg\Laravel\PHPStan\Rules\LaravelEnvFunctionCallsRule;
 
@@ -23,51 +28,51 @@ final class LaravelEnvFunctionCallsRuleTest extends TestCase
 {
     public function testRuleOnlyFiresOnStaticCalls(): void
     {
-        $this->assertEquals(
-            \PhpParser\Node\Expr\FuncCall::class,
+        self::assertEquals(
+            FuncCall::class,
             (new LaravelEnvFunctionCallsRule())->getNodeType()
         );
     }
 
     public function testProcessingHaltsWhenNonFuncCallInstanceIsPassed(): void
     {
-        $this->assertCount(0, (new LaravelEnvFunctionCallsRule())->processNode(
-            M::mock(\PhpParser\Node\Expr\MethodCall::class),
-            M::mock(\PHPStan\Analyser\Scope::class)
+        self::assertCount(0, (new LaravelEnvFunctionCallsRule())->processNode(
+            M::mock(MethodCall::class),
+            M::mock(Scope::class)
         ));
     }
 
     public function testProcessingHaltsWhenNameIsAnExpression(): void
     {
-        $this->assertCount(0, (new LaravelEnvFunctionCallsRule())->processNode(
-            M::mock(\PhpParser\Node\Expr\FuncCall::class, function(MI $mock) {
-                $mock->name = M::mock(\PhpParser\Node\Expr::class);
+        self::assertCount(0, (new LaravelEnvFunctionCallsRule())->processNode(
+            M::mock(FuncCall::class, function(MI $mock) {
+                $mock->name = M::mock(Expr::class);
             }),
-            M::mock(\PHPStan\Analyser\Scope::class)
+            M::mock(Scope::class)
         ));
     }
 
     public function testProcessingHaltsWhenMethodsDoNotMatch(): void
     {
-        $this->assertCount(0, (new LaravelEnvFunctionCallsRule())->processNode(
-            M::mock(\PhpParser\Node\Expr\FuncCall::class, function(MI $mock) {
-                $mock->name = M::mock(\PhpParser\Node\Name::class, function(MI $mock) {
+        self::assertCount(0, (new LaravelEnvFunctionCallsRule())->processNode(
+            M::mock(FuncCall::class, function(MI $mock) {
+                $mock->name = M::mock(Name::class, function(MI $mock) {
                     $mock->shouldReceive('toString')->andReturn('notEnv');
                 });
             }),
-            M::mock(\PHPStan\Analyser\Scope::class)
+            M::mock(Scope::class)
         ));
     }
 
     public function testEnvCallsAreValidWhenConfigIsPresentInThePath(): void
     {
-        $this->assertCount(0, (new LaravelEnvFunctionCallsRule())->processNode(
-            M::mock(\PhpParser\Node\Expr\FuncCall::class, function(MI $mock) {
-                $mock->name = M::mock(\PhpParser\Node\Name::class, function(MI $mock) {
+        self::assertCount(0, (new LaravelEnvFunctionCallsRule())->processNode(
+            M::mock(FuncCall::class, function(MI $mock) {
+                $mock->name = M::mock(Name::class, function(MI $mock) {
                     $mock->shouldReceive('toString')->andReturn('env');
                 });
             }),
-            M::mock(\PHPStan\Analyser\Scope::class, function(MI $mock) {
+            M::mock(Scope::class, function(MI $mock) {
                 $mock->shouldReceive('getFile')->andReturn('/foo/bar/config/file.php');
             })
         ));
@@ -75,13 +80,13 @@ final class LaravelEnvFunctionCallsRuleTest extends TestCase
 
     public function testEnvCallsAreInvalidWhenConfigIsNotPresentInThePath(): void
     {
-        $this->assertCount(1, (new LaravelEnvFunctionCallsRule())->processNode(
-            M::mock(\PhpParser\Node\Expr\FuncCall::class, function(MI $mock) {
-                $mock->name = M::mock(\PhpParser\Node\Name::class, function(MI $mock) {
+        self::assertCount(1, (new LaravelEnvFunctionCallsRule())->processNode(
+            M::mock(FuncCall::class, function(MI $mock) {
+                $mock->name = M::mock(Name::class, function(MI $mock) {
                     $mock->shouldReceive('toString')->andReturn('env');
                 });
             }),
-            M::mock(\PHPStan\Analyser\Scope::class, function(MI $mock) {
+            M::mock(Scope::class, function(MI $mock) {
                 $mock->shouldReceive('getFile')->andReturn('/foo/bar/file.php');
             })
         ));

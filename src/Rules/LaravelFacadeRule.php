@@ -11,6 +11,16 @@ declare(strict_types=1);
 
 namespace WterBerg\Laravel\PHPStan\Rules;
 
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Identifier;
@@ -22,9 +32,10 @@ use PHPStan\Rules\RuleErrorBuilder;
 /**
  * Class LaravelFacadeRule.
  *
- * Custom PHPStan rule for Laravel projects that scans for usages of the core Laravel facade for which helper functions
- * are available. As the Laravel helper functions lead to a smaller stack, they are almost by definition more efficient
- * and faster. The below example illustrates this by comparing the Config facade versus its helper function equivalent.
+ * Custom PHPStan rule for Laravel projects that scans for usages of the core Laravel facade for
+ * which helper functions are available. As the Laravel helper functions lead to a smaller stack,
+ * they are almost by definition more efficient and faster. The below example illustrates this by
+ * comparing the Config facade versus its helper function equivalent.
  *
  * <strong>Callstack for `Config::get('app.name')`</strong>
  * <ol>
@@ -58,43 +69,43 @@ final class LaravelFacadeRule implements Rule
      * @var array<string, array<string, mixed>>
      */
     private array $facades = [
-        \Illuminate\Support\Facades\App::class => [
+        App::class => [
             'alternative' => 'app()',
             'methods'     => ['make', 'makeWith'],
         ],
-        \Illuminate\Support\Facades\Auth::class => [
+        Auth::class => [
             'alternative' => 'auth()',
             'methods'     => ['guard'],
         ],
-        \Illuminate\Support\Facades\Cache::class => [
+        Cache::class => [
             'alternative' => 'cache()',
             'methods'     => ['get', 'put'],
         ],
-        \Illuminate\Support\Facades\Config::class => [
+        Config::class => [
             'alternative' => 'config()',
             'methods'     => ['get', 'set'],
         ],
-        \Illuminate\Support\Facades\Redirect::class => [
+        Redirect::class => [
             'alternative' => 'redirect()',
             'methods'     => ['to'],
         ],
-        \Illuminate\Support\Facades\Request::class => [
+        Request::class => [
             'alternative' => 'request()',
             'methods'     => ['only'],
         ],
-        \Illuminate\Support\Facades\Session::class => [
+        Session::class => [
             'alternative' => 'session()',
             'methods'     => ['get', 'put'],
         ],
-        \Illuminate\Support\Facades\URL::class => [
+        URL::class => [
             'alternative' => 'url()',
             'methods'     => ['to'],
         ],
-        \Illuminate\Support\Facades\Validator::class => [
+        Validator::class => [
             'alternative' => 'validator()',
             'methods'     => ['make'],
         ],
-        \Illuminate\Support\Facades\View::class => [
+        View::class => [
             'alternative' => 'view()',
             'methods'     => ['make'],
         ],
@@ -103,8 +114,9 @@ final class LaravelFacadeRule implements Rule
     /**
      * LaravelFacadeRule constructor.
      *
-     * @param array<string, array<string, mixed>> $facades When non-empty, will override the facade/method combinations
-     *                                                     that this rule should target
+     * @param array<string, array<string, mixed>> $facades When non-empty, will override the
+     *                                                     facade/method combinations that this rule
+     *                                                     should target
      */
     public function __construct(array $facades = [])
     {
@@ -118,7 +130,7 @@ final class LaravelFacadeRule implements Rule
      */
     public function getNodeType(): string
     {
-        return \PhpParser\Node\Expr\StaticCall::class;
+        return StaticCall::class;
     }
 
     /**
