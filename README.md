@@ -1,6 +1,6 @@
 # WterBerg / PHPStan Laravel
 
-[github.com/wterberg/dcat-catalog](https://github.com/wterberg/dcat-catalog.git)
+[github.com/wterberg/phpstan-laravel](https://github.com/wterberg/phpstan-laravel.git)
 
 Contains several custom rules to analyse Laravel projects with PHPStan.
 

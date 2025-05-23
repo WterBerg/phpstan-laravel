@@ -5,6 +5,7 @@
 # Composer
 /vendor
 /auth.json
+/composer.lock
 
 # Cache
 /.composer-cache
