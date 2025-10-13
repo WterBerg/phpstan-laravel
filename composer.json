@@ -35,9 +35,9 @@
     },
     "require": {
         "php": "^8.2",
-        "illuminate/support": "^10.0 || ^11.0 || ^12.0" ,
-        "nikic/php-parser": "^4.17",
-        "phpstan/phpstan": "^2.1"
+        "illuminate/support": "^10.0 || ^11.0 || ^12.0",
+        "nikic/php-parser": "^4.17 || ^5.0",
+        "phpstan/phpstan": "^1.10 || ^2.1"
     },
     "require-dev": {
         "xpertselect/tools": "^1.0"
